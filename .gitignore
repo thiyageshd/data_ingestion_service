@@ -127,6 +127,8 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+*data_ms/
+*__MACOSX
 
 # Spyder project settings
 .spyderproject

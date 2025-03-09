@@ -1,0 +1,7 @@
+kafka
+fastapi
+uvicorn
+requests
+redis
+rq
+loguru
