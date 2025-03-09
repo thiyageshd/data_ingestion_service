@@ -3,8 +3,8 @@ from src.controllers import fetch_router, status_router
 app = FastAPI()
 
 app = FastAPI(title="Data Ingestion Service")
-app.include_router(fetch_router, prefix="/fetch")
-app.include_router(status_router, prefix="/status")
+app.include_router(fetch_router)
+app.include_router(status_router)
 
 
 @app.get("/")
