@@ -1,4 +1,4 @@
-kafka
+confluent-kafka
 fastapi
 uvicorn
 requests
