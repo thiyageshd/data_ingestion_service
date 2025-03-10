@@ -1,4 +1,4 @@
-from services.yahoo_finance import YahooFinanceService
+from src.services.yahoo_finance import YahooFinanceService
 
 def fetch_and_store_data(symbol, job_id):
     yahoo_service = YahooFinanceService()

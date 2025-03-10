@@ -13,9 +13,12 @@ from src.config import Config
 def process_financial_data(symbol: str, job_id: str):
     """ Fetch financial data and send it to Kafka. """
     try:
+        logger.info(f"Processing financial data for {symbol} - Job ID: {job_id}")
         producer = Producer({'bootstrap.servers': Config.KAFKA_SERVERS})
+        logger.info("Kafka producer initialized")
         result = fetch_and_store_data(symbol, job_id)
         if result:
+            logger.info("Sending messages to kafka")
             send_to_kafka(producer, Config.KAFKA_TOPIC, result)  # Send result to Kafka
     except Exception as e:
         logger.error(f"Error processing financial data: {e}")
@@ -26,7 +29,8 @@ def send_to_kafka(producer: Producer, topic: str, data: dict):
     try:
         message = json.dumps(data)
         producer.produce(topic, message.encode("utf-8"), callback=delivery_report)
-        producer.flush()  # Ensures the message is sent immediately
+        producer.flush()
+        logger.info("Message sent to Kafka")
     except Exception as e:
         logger.error(f"Error sending message to Kafka: {e}")
 
@@ -45,6 +49,9 @@ class BackgroundJobService:
     def schedule_fetching_job(self, symbol: str) -> str:
         job_id = self._generate_job_id()
         self.queue.enqueue(process_financial_data, symbol, job_id)
+        ###TODO Enqueue is not working - Need to debug it further.
+        # Getting error: AttributeError: module \'signal\' has no attribute \'SIGALRM\'. Did you mean: \'SIGABRT\'?\n' 
+        process_financial_data(symbol, job_id)
         return job_id
 
     def get_job_status(self, job_id: str) -> str:
